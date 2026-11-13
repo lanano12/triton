@@ -181,7 +181,13 @@ def is_hip_rdna():
 
 
 def get_hip_lds_size():
-    return 163840 if is_hip_cdna4() else 65536
+    # Keep in sync with TargetFeatures::getSharedMemorySize in
+    # third_party/amd/lib/Dialect/TritonAMDGPU/IR/TargetFeatures.cpp.
+    if is_hip_cdna5():
+        return 320 * 1024
+    if is_hip_cdna4():
+        return 160 * 1024
+    return 64 * 1024
 
 
 def is_xpu():
